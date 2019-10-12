@@ -1,0 +1,23 @@
+version: "2"
+
+volumes:
+    mongo-data:
+
+services:
+  mongo:
+    image: arm64v8/mongo
+    restart: always
+    volumes:
+      - 'mongo-data:/data/db'
+    expose:
+      - "27017"
+  express:
+    depends_on:
+      - mongo
+    build: ./express
+    ports:
+      - "80:80"
+  sensor:
+    depends_on:
+      - mongo
+    build: ./sensor
